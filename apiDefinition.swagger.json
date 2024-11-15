@@ -1,0 +1,344 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "EMT ATLAS AIMS",
+    "description": "EMT ATLAS AIMS Power Apps Connector for Asset Information Management",
+    "version": "0.5"
+  },
+  "host": "staging-aims.enablemyteam.com",
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "consumes": [],
+  "produces": [],
+  "paths": {
+    "/{subdomain}/aimsapi/assets/configuration/base_line/": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ListBaseline"
+              }
+            }
+          }
+        },
+        "summary": "List Baseline",
+        "description": "List Baseline",
+        "operationId": "list-assets-configuration-baseline",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "$ref": "#/parameters/subdomain__in_path"
+          }
+        ]
+      }
+    },
+    "/{subdomain}/aimsapi/assets/configuration/base_line/{baseline_id}/": {
+      "get": {
+        "summary": "Retrieve Baseline with id",
+        "description": "Retrieve Baseline with id",
+        "operationId": "get-assets-configuration-baseline",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ListBaseline"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "baseline_id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "$ref": "#/parameters/subdomain__in_path"
+          }
+        ]
+      }
+    },
+    "/{subdomain}/aimsapi/assets/search/": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/AssetSearchResult"
+            }
+          }
+        },
+        "summary": "Filter Assets",
+        "description": "Filter the existing assets",
+        "operationId": "assets-search",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "contract": {
+                  "type": "string",
+                  "description": "contract"
+                },
+                "page": {
+                  "type": "integer",
+                  "format": "int32",
+                  "description": "page"
+                },
+                "pageSize": {
+                  "type": "integer",
+                  "format": "int32",
+                  "description": "pageSize"
+                },
+                "modified_date": {
+                  "type": "object",
+                  "properties": {
+                    "gt": {
+                      "type": "string",
+                      "description": "gt"
+                    },
+                    "lt": {
+                      "type": "string",
+                      "description": "lt"
+                    }
+                  },
+                  "description": "modified_date"
+                },
+                "sortKey": {
+                  "type": "string",
+                  "description": "sortKey"
+                },
+                "sortOrder": {
+                  "type": "string",
+                  "description": "sortOrder"
+                },
+                "filteredAssetClassCode": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "filteredAssetClassCode"
+                }
+              }
+            }
+          },
+          {
+            "$ref": "#/parameters/subdomain__in_path"
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "AssetSearchResult": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int32",
+          "description": "count"
+        },
+        "result": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "contract": {
+                "type": "string",
+                "description": "contract id of which this asset belongs to"
+              },
+              "discipline": {
+                "type": "string",
+                "description": "system of the asset"
+              },
+              "sub_discipline": {
+                "type": "string",
+                "description": "sub system of the asset"
+              },
+              "function": {
+                "type": "string",
+                "description": "functional group of the asset"
+              },
+              "sub_functional_unit": {
+                "type": "string",
+                "description": "sub functional unit of asset"
+              },
+              "changeset": {
+                "type": "string",
+                "description": "changeset id the changeset of which this asset belongs"
+              },
+              "class_name": {
+                "type": "string",
+                "description": "class_name of the asset"
+              },
+              "class_code": {
+                "type": "string",
+                "description": "class code of the asset"
+              },
+              "tag_code": {
+                "type": "string",
+                "description": "tag code of the asset"
+              },
+              "change_flag": {
+                "type": "string",
+                "description": "change flag of the asset. Default = \u2018latest\u2019. possible values [`latest`, `pending`]"
+              },
+              "attribute": {
+                "type": "object",
+                "additionalProperties": {},
+                "description": "an array containing all attributes for an asset. Only populated asset attributes will be returned.\n\nIf no attributes are populated for an asset, then an empty array will be returned.\n\nOnly specific mentioned attributes will be returned if mentioned in <b>fieldsIncluded</b> param in payload"
+              },
+              "import_source": {
+                "type": "string",
+                "description": "Source from where this asset was first created ex: model name, excel or another system"
+              },
+              "imported_datetime": {
+                "type": "string",
+                "format": "date-time",
+                "description": "creation date time in UTC"
+              },
+              "modified_date": {
+                "type": "string",
+                "format": "date-time",
+                "description": "modified date time in UTC"
+              },
+              "relatedWith": {
+                "type": "array",
+                "items": {},
+                "description": "Array of related assets where this asset is destination. Any empty array will not be returned if there are no related assets. Will be returned for every asset in result set"
+              },
+              "relatedTo": {
+                "type": "array",
+                "items": {},
+                "description": "Array of related assets where this asset is a source. Any empty array will not be returned if there are no related assets. Will be returned only when searched using a specific tag_code."
+              },
+              "num_parent_relations": {
+                "type": "integer",
+                "description": "count of parent relations of asset"
+              }
+            }
+          }
+        }
+      }
+    },
+    "ContractStatusInfo": {
+      "type": "object",
+      "properties": {
+        "contract_id": {
+          "type": "string",
+          "maxLength": 236
+        },
+        "status": {
+          "type": "string",
+          "maxLength": 236
+        },
+        "contract_name": {
+          "type": "string",
+          "maxLength": 236
+        },
+        "baseline_sync_in_progress": {
+          "type": "string",
+          "maxLength": 236
+        }
+      }
+    },
+    "ListBaseline": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "readOnly": true,
+          "maxLength": 236
+        },
+        "contract_id": {
+          "type": "string",
+          "maxLength": 236
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 236
+        },
+        "created_date": {
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "modified_date": {
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "created_by": {
+          "type": "string",
+          "readOnly": true,
+          "maxLength": 236
+        },
+        "modified_by": {
+          "type": "string",
+          "readOnly": true,
+          "maxLength": 236
+        },
+        "status": {
+          "type": "string",
+          "readOnly": true,
+          "maxLength": 236
+        },
+        "customer": {
+          "type": "string",
+          "readOnly": true,
+          "maxLength": 236
+        },
+        "contract_status_info": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ContractStatusInfo"
+          },
+          "readOnly": true
+        }
+      }
+    }
+  },
+  "parameters": {
+    "subdomain__in_path": {
+      "name": "subdomain",
+      "in": "path",
+      "required": true,
+      "type": "string",
+      "description": "The subdomain of the customer's URL. E.g. staging-{customer}"
+    }
+  },
+  "responses": {},
+  "securityDefinitions": {
+    "oauth2-auth": {
+      "type": "oauth2",
+      "flow": "accessCode",
+      "authorizationUrl": "https://StagingAimsEnableMyTeam.b2clogin.com/StagingAimsEnableMyTeam.onmicrosoft.com/b2c_1a_signinlocal/oauth2/v2.0/authorize",
+      "tokenUrl": "https://StagingAimsEnableMyTeam.b2clogin.com/StagingAimsEnableMyTeam.onmicrosoft.com/b2c_1a_signinlocal/oauth2/v2.0/token",
+      "scopes": {
+        "https://StagingAimsEnableMyTeam.onmicrosoft.com/Aims/ReadWrite.All offline_access": "https://StagingAimsEnableMyTeam.onmicrosoft.com/Aims/ReadWrite.All offline_access"
+      }
+    }
+  },
+  "security": [
+    {
+      "oauth2-auth": [
+        "https://StagingAimsEnableMyTeam.onmicrosoft.com/Aims/ReadWrite.All offline_access"
+      ]
+    }
+  ],
+  "tags": []
+}
